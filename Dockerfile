@@ -9,11 +9,10 @@ RUN dpkg --add-architecture i386 && \
     apt-get install -y curl tar ca-certificates lib32gcc1 lib32stdc++6 libcurl4-gnutls-dev:i386 && \
     # steamcmd
     cd /root/steamcmd && curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - && \
-    # cleanup
-    apt-get autoremove --purge -y wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install Don't Starve Together
-RUN taskset -c 0 /root/steamcmd/steamcmd.sh \
+RUN /root/steamcmd/steamcmd.sh \
     +@ShutdownOnFailedCommand 1 \
     +@NoPromptForPassword 1 \
     +login anonymous \
@@ -32,4 +31,4 @@ VOLUME /root/dst/mods
 VOLUME /root/dst/ugc_mods
 
 WORKDIR /root/dst/bin
-CMD "./start.sh"
+CMD ["./start.sh"]
